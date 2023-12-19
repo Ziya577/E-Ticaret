@@ -30,18 +30,14 @@ public class UserDetailsService {
     public UserDetailsDto createUser( CreateUserDetailsRequest request) {
         User user = userService.findById(request.getId());
 
+        UserDetails newUserDetails=modelMapper.map(request,UserDetails.class);
+        newUserDetails.setUser(user);
 
-        UserDetails userDetails = new UserDetails(
-                request.getAddress(),
-                request.getGender(),
-                request.getBirthDate(),
-                request.getPostCode(), user);
+        UserDetails save= userDetailsRepository.save(newUserDetails);
+        UserDetailsDto map =modelMapper.map(save,UserDetailsDto.class);
+        return map;
 
-        UserDetails savedUserDetails = userDetailsRepository.save(userDetails);
 
-        UserDetailsDto userDetailsDto = modelMapper.map(savedUserDetails, UserDetailsDto.class);
-
-        return userDetailsDto;
 
 
     }
@@ -49,19 +45,17 @@ public class UserDetailsService {
     public UserDetailsDto updateUser(Long userDetailsId, UpdateUserDetailsRequest request) {
         UserDetails userDetails = findUserById(userDetailsId);
 
+        userDetails.setAddress(request.getAddress());
+        userDetails.setGender(request.getGender());
+        userDetails.setPostCode(request.getPostCode());
+        userDetails.setBirthDate(request.getBirthDate());
+        UserDetails save = userDetailsRepository.save(userDetails);
 
-        UserDetails updateUserDetails = new UserDetails(
-                userDetails.getId(),
-                request.getAddress(),
-                request.getGender(),
-                request.getBirthDate(),
-                request.getPostCode(),userDetails.getUser());
-
-        UserDetails savedUserDetails = userDetailsRepository.save(updateUserDetails);
-
-        UserDetailsDto map = modelMapper.map(savedUserDetails, UserDetailsDto.class);
-
+        UserDetailsDto map = modelMapper.map(save, UserDetailsDto.class);
         return map;
+
+
+
     }
 
 

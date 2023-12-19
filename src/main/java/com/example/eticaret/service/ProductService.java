@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -52,23 +53,20 @@ public class ProductService {
 
     public ProductDto updateProduct(Long id, ProductRequest productRequest) {
 
+       Product foundedProduct = findProductByProductId(id);
 
-        Product foundedProduct = findByProductByProductId(id);
+        foundedProduct.setName(productRequest.getName());
+        foundedProduct.setAmount(productRequest.getAmount());
+        foundedProduct.setColor(productRequest.getColor());
+        foundedProduct.setPrice(productRequest.getPrice());
+        foundedProduct.setAmount(productRequest.getAmount());
+        foundedProduct.setCategory(productRequest.getCategory());
 
-        Product products = new Product(
-                foundedProduct.getId(),
-                productRequest.getName(),
-                productRequest.getCategory(),
-                productRequest.getPrice(),
-                productRequest.getColor(),
-                productRequest.getAmount(),
-                foundedProduct.getUser());
+        Product save = productRepository.save(foundedProduct);
 
-        Product updatedProduct = productRepository.save(products);
+        ProductDto map = modelMapper.map(save, ProductDto.class);
 
-        ProductDto updatedProductDto = modelMapper.map(updatedProduct, ProductDto.class);
-
-        return updatedProductDto;
+        return map;
 
     }
 
@@ -77,7 +75,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product findByProductByProductId(Long id) {
+    public Product findProductByProductId(Long id) {
         return productRepository.findById(id).orElseThrow(()->new ProductNotFoundException("Product not found"));
     }
 }

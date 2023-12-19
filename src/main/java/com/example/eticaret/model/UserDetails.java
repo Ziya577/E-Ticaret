@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -16,7 +13,7 @@ import java.time.LocalDate;
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Data
 @EqualsAndHashCode
 public class UserDetails {
     @Id
@@ -28,7 +25,7 @@ public class UserDetails {
     private String postCode;
     private String gender;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 
 

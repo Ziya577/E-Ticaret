@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-/**
- * Postmanda Update UserdetailsServis emri verdikde aldigimiz cavabin yeri ters gelir:
- * birinci user sonra detallari gelmelidi anacq once detallar sonra user gelir*/
 
 @RestController
 @RequestMapping("/api")
